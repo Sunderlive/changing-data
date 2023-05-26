@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <script type="module">
+        import { changeStorage } from './todo-app/changeApis.js'
+        import { createTodoApp } from './todo-app/view.js'
+        import { getTodoList, createTodoItem, switchTodoItemDone, deleteTodoItem } from './todo-app/api.js';
+        import { createTodoItemStorage, getTodoListStorage, switchTodoItemDoneStorage, deleteTodoItemStorage } from './todo-app/localStorage.js'
+        const button = document.querySelector('.btn');
+        button.textContent = 'LocalStorage'
+        const owner = 'отец';
+        let direction
+        direction = JSON.parse(localStorage.getItem('ButtonDir'))
+        if (direction === null || direction === false) {
+            direction = false
+            localStorage.setItem('ButtonDir', JSON.stringify(direction))
+            button.textContent = 'LocalStorage'
+            changeStorage(owner, getTodoListStorage, createTodoApp, createTodoItemStorage, switchTodoItemDoneStorage, deleteTodoItemStorage)
+        }
+        else {
+            button.textContent = 'Api JS'
+            changeStorage(owner, getTodoList, createTodoApp, createTodoItem, switchTodoItemDone, deleteTodoItem)
+        }
+        button.addEventListener('click', function () {
+            direction = !direction
+            localStorage.setItem('ButtonDir', direction)
+            if (direction === false) {
+                button.textContent = 'LocalStorage'
+                changeStorage(owner, getTodoListStorage, createTodoApp, createTodoItemStorage, switchTodoItemDoneStorage, deleteTodoItemStorage)
+            }
+            else {
+                button.textContent = 'Api JS'
+                changeStorage(owner, getTodoList, createTodoApp, createTodoItem, switchTodoItemDone, deleteTodoItem)
+            }
+        })
+    </script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container mb-5">
+        <nav class="nav">
+            <a href="index.html" class="nav-link">Мои дела</a>
+            <a href="dad.html" class="nav-link">Дела папы</a>
+            <a href="mom.html" class="nav-link">Дела мамы</a>
+            <button class="btn btn-primary" style="margin-left: auto;padding: 10px;"></button>
+        </nav>
+    </div>
+    <div id="todo-app" class="container "></div>
+</body>
+
+</html>
